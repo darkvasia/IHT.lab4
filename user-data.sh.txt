@@ -1,0 +1,20 @@
+#!/bin/bash
+set -x
+
+sudo adduser --gecos "" adminuser
+
+sudo passwd adminuser
+
+sudo usermod -aG sudo test
+
+sudo adduser --gecos "" poweruser
+
+sudo passwd -d poweruser
+
+echo "poweruser ALL=(ALL) NOPASSWD: /sbin/iptables" | sudo tee /etc/sudoers.d/poweruser > /dev/null
+
+sudo chmod 750 /home/adminuser
+
+sudo chown adminuser:poweruser /home/adminuser
+
+sudo ln -s /etc/mtab /home/poweruser/mtab
